@@ -43,3 +43,10 @@ def sharpe_ratio(
     ann_vol = annualized_volatility(returns, periods_per_year)
 
     return (ann_return - risk_free_rate) / ann_vol
+
+
+def cumulative_returns(returns: pd.Series) -> pd.Series:
+    """
+    Compute cumulative returns from periodic returns.
+    """
+    return (1 + returns).cumprod() - 1
