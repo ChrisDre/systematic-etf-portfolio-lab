@@ -75,3 +75,37 @@ def monthly_rebalance_with_drift(
         return portfolio_returns, weights_history
 
     return portfolio_returns
+
+
+def top_n_momentum_portfolio(
+    returns: pd.DataFrame,
+    signals: pd.DataFrame,
+    n_assets: int = 3,
+) -> pd.Series:
+    """
+    Allocate equally to the top-N assets by signal and hold for the next period.
+    """
+    signals = signals.reindex(returns.index)
+    portfolio_returns = []
+
+    for i in range(len(returns.index) - 1):
+        signal_date = returns.index[i]
+        return_date = returns.index[i + 1]
+
+        signal = signals.loc[signal_date].dropna()
+
+        if len(signal) < n_assets:
+            continue
+
+        top_assets = signal.nlargest(n_assets).index
+        next_returns = returns.loc[return_date, top_assets]
+
+        portfolio_return = next_returns.mean()
+
+        portfolio_returns.append((return_date, portfolio_return))
+
+    return pd.Series(
+        data=[r for _, r in portfolio_returns],
+        index=[d for d, _ in portfolio_returns],
+        name="top_n_momentum",
+    )
