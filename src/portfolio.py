@@ -109,3 +109,47 @@ def top_n_momentum_portfolio(
         index=[d for d, _ in portfolio_returns],
         name="top_n_momentum",
     )
+
+
+def monthly_top_n_momentum_portfolio(
+    returns: pd.DataFrame,
+    signals: pd.DataFrame,
+    n_assets: int = 3,
+) -> pd.Series:
+    """
+    Monthly top-N momentum strategy.
+
+    At each month-end:
+    - rank assets by momentum signal
+    - select top-N assets
+    - allocate equally
+    - hold selected assets during the next month
+    """
+    signals = signals.reindex(returns.index)
+
+    month_ends = returns.resample("ME").last().index
+    month_ends = month_ends.intersection(returns.index)
+
+    portfolio_returns = []
+
+    for i in range(len(month_ends) - 1):
+        signal_date = month_ends[i]
+        start_date = month_ends[i + 1]
+
+        signal = signals.loc[signal_date].dropna()
+
+        if len(signal) < n_assets:
+            continue
+
+        top_assets = signal.nlargest(n_assets).index
+
+        next_month = returns.loc[
+            (returns.index > signal_date)
+            & (returns.index <= start_date),
+            top_assets,
+        ]
+
+        monthly_returns = next_month.mean(axis=1)
+        portfolio_returns.append(monthly_returns)
+
+    return pd.concat(portfolio_returns).rename("monthly_top_n_momentum")
