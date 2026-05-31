@@ -107,3 +107,18 @@ def rolling_sharpe_ratio(
     )
 
     return rolling_return / rolling_vol
+
+
+def performance_summary(
+    returns: pd.Series,
+    periods_per_year: int = 252,
+) -> pd.Series:
+    """
+    Create a performance summary for a return series.
+    """
+    return pd.Series({
+        "Annualized Return": annualized_return(returns, periods_per_year),
+        "Annualized Volatility": annualized_volatility(returns, periods_per_year),
+        "Sharpe Ratio": sharpe_ratio(returns, periods_per_year=periods_per_year),
+        "Max Drawdown": max_drawdown(returns),
+    })
