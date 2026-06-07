@@ -92,6 +92,10 @@ notebooks/10_final_research_report.ipynb
 - The strategy rotated across equities, real estate, gold, and fixed income rather than maintaining static exposures.
 - Risk and performance characteristics varied across market environments, highlighting the importance of rolling analytics and drawdown analysis.
 
+## Equity Curve
+
+![Equity Curve](/reports/images/Equity%20Curves.png)
+
 ## Repository Structure
 
 ```text
@@ -128,3 +132,18 @@ Potential extensions include:
 - Portfolio optimization
 - More realistic transaction cost models
 - Performance attribution and factor analysis
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone <repository-url>
+cd systematic-etf-momentum
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
