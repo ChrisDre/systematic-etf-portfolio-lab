@@ -94,6 +94,8 @@ notebooks/10_final_research_report.ipynb
 
 ## Equity Curve
 
+The figure below compares cumulative returns of the monthly equal-weight benchmark and the momentum strategy.
+
 ![Equity Curve](/reports/images/Equity%20Curves.png)
 
 ## Repository Structure
@@ -139,7 +141,7 @@ Clone the repository:
 
 ```bash
 git clone <repository-url>
-cd systematic-etf-momentum
+cd systematic-etf-portfolio-lab
 ```
 
 Install dependencies:
